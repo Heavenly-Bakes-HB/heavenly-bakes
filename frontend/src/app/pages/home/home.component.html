@@ -1,0 +1,69 @@
+<section class="hero-section">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <p class="text-uppercase fw-bold text-danger mb-2">Freshly baked delights</p>
+        <h1 class="display-5 fw-bold mb-3">Sweet cravings, delivered with love.</h1>
+        <p class="lead text-muted mb-4">
+          Discover trending cakes, cookies, breads, and special offers from Heavenly Bakes.
+        </p>
+        <div class="d-flex flex-wrap gap-3" *ngIf="!isLoggedIn()">
+          <a class="btn btn-danger btn-lg" routerLink="/products">Shop Now</a>
+          <a class="btn btn-outline-danger btn-lg" routerLink="/register">Create Account</a>
+        </div>
+        <div class="d-flex flex-wrap gap-3" *ngIf="isLoggedIn()">
+          <a class="btn btn-danger btn-lg" routerLink="/dashboard">Go to Dashboard</a>
+          <a class="btn btn-outline-danger btn-lg" routerLink="/cart">View Cart</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-card p-4 rounded-4 shadow-sm">
+          <h4 class="fw-bold mb-3">Why customers love us</h4>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2" *ngFor="let item of highlights">✔ {{ item }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-4">
+  <div class="row g-4 mb-4">
+    <div class="col-md-4" *ngFor="let offer of offers">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ offer.title }}</h5>
+          <p class="card-text text-muted">{{ offer.text }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 align-items-center">
+    <div class="col-lg-7">
+      <div class="p-4 rounded-4 bg-light">
+        <h3 class="fw-bold mb-3">Trending products</h3>
+        <div class="row g-3">
+          <div class="col-md-4" *ngFor="let product of trendingProducts">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <h6 class="fw-bold">{{ product.name }}</h6>
+                <p class="text-danger fw-semibold mb-0">{{ product.price }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="p-4 rounded-4 bg-danger text-white shadow-sm">
+        <h3 class="fw-bold mb-2">Limited-time discount</h3>
+        <p class="mb-3">Get up to 30% off on selected birthday cakes and custom desserts.</p>
+        <a class="btn btn-light text-danger" *ngIf="!isLoggedIn()" routerLink="/login">Login to claim</a>
+        <a class="btn btn-light text-danger" *ngIf="isLoggedIn()" routerLink="/dashboard">Open dashboard</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="mb-3">Shopping Cart</h2>
+
+          <div *ngIf="message" class="alert" [ngClass]="isError ? 'alert-danger' : 'alert-success'" role="alert">
+            {{ message }}
+          </div>
+
+          <div *ngIf="items.length === 0" class="text-muted">
+            Your cart is empty. Add a few delicious items from the products page.
+          </div>
+
+          <table class="table table-bordered" *ngIf="items.length > 0">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td>{{ item.name }}</td>
+                <td>₹ {{ item.price }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-secondary btn-sm" (click)="changeQuantity(item, -1)">-</button>
+                    <span>{{ item.quantity }}</span>
+                    <button class="btn btn-outline-secondary btn-sm" (click)="changeQuantity(item, 1)">+</button>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-danger btn-sm" (click)="remove(item)">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-3">Checkout Summary</h4>
+          <p class="mb-2">Items: {{ items.length }}</p>
+          <p class="mb-3">Estimated total: ₹ {{ getTotal() }}</p>
+          <button class="btn btn-danger w-100" (click)="checkout()" [disabled]="items.length === 0">
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

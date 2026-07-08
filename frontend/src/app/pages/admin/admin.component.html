@@ -1,0 +1,151 @@
+<div class="container mt-4">
+  <div class="row gy-4">
+    <div class="col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title">Product Management</h3>
+          <p class="text-muted">Create new products or update existing items with discount and trending flags.</p>
+
+          <div *ngIf="message" class="alert" [ngClass]="isError ? 'alert-danger' : 'alert-success'" role="alert">
+            {{ message }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" [(ngModel)]="productForm.name" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="productForm.description"></textarea>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label class="form-label">Price</label>
+              <input type="number" class="form-control" [(ngModel)]="productForm.price" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Stock</label>
+              <input type="number" class="form-control" [(ngModel)]="productForm.stock" />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Image URL</label>
+            <input class="form-control" [(ngModel)]="productForm.image_url" />
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label class="form-label">Discount %</label>
+              <input type="number" class="form-control" [(ngModel)]="productForm.discount_percent" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Flags</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="discountEnabled" [(ngModel)]="productForm.discount_enabled" />
+                <label class="form-check-label" for="discountEnabled">Discount enabled</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="isTrending" [(ngModel)]="productForm.is_trending" />
+                <label class="form-check-label" for="isTrending">Trending</label>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-danger me-2" (click)="saveProduct()">{{ selectedProduct ? 'Update Product' : 'Create Product' }}</button>
+          <button class="btn btn-outline-secondary" (click)="resetForm()" type="button">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Product List</h3>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Discount</th>
+                  <th>Trending</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of products">
+                  <td>{{ product.name }}</td>
+                  <td>₹ {{ product.price }}</td>
+                  <td>{{ product.stock }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="product.discount_enabled ? 'bg-success' : 'bg-secondary'">
+                      {{ product.discount_enabled ? (product.discount_percent || 0) + '%': 'Off' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="product.is_trending ? 'bg-danger' : 'bg-secondary'">
+                      {{ product.is_trending ? 'Trending' : 'No' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-2" (click)="selectProduct(product)">Edit</button>
+                    <button class="btn btn-sm btn-outline-success me-1" (click)="toggleProductActive(product, 'discount_enabled')">
+                      {{ product.discount_enabled ? 'Disable Discount' : 'Enable Discount' }}
+                    </button>
+                    <button class="btn btn-sm btn-outline-warning" (click)="toggleProductActive(product, 'is_trending')">
+                      {{ product.is_trending ? 'Unset Trending' : 'Set Trending' }}
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="card-title">Incoming Orders</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Customer</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of orders">
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.first_name }} {{ order.last_name }}<br />{{ order.email }}</td>
+                  <td>₹ {{ order.total_amount }}</td>
+                  <td>{{ order.status }}</td>
+                  <td>{{ order.created_at | date:'medium' }}</td>
+                  <td>
+                    <select class="form-select form-select-sm mb-2" [(ngModel)]="order.status" (change)="updateOrderStatus(order, order.status)">
+                      <option value="PLACED">PLACED</option>
+                      <option value="PREPARING">PREPARING</option>
+                      <option value="DELIVERING">DELIVERING</option>
+                      <option value="DELIVERED">DELIVERED</option>
+                    </select>
+                    <a [routerLink]="['/orders', order.id]" class="btn btn-sm btn-outline-primary w-100">View</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

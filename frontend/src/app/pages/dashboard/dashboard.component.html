@@ -1,0 +1,60 @@
+<div class="container mt-4">
+  <div #toastAnchor class="position-sticky top-0 z-3 py-2 bg-white">
+    <div *ngIf="message" class="alert d-flex justify-content-between align-items-center mb-0" [ngClass]="isError ? 'alert-danger' : 'alert-success'" role="alert">
+      <span>{{ message }}</span>
+      <a *ngIf="showViewCartLink" class="btn btn-sm btn-outline-light" routerLink="/cart">View Cart</a>
+    </div>
+  </div>
+
+  <div class="row align-items-center mb-4">
+    <div class="col-md-8">
+      <h2 class="fw-bold">Welcome back, {{ user?.name || user?.first_name || 'Customer' }}!</h2>
+      <p class="text-muted">Here’s your bakery dashboard with featured products and quick actions.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+      <a *ngIf="user" class="btn btn-outline-secondary me-2" routerLink="/orders">View Orders</a>
+      <a class="btn btn-danger" routerLink="/cart">View Cart</a>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h5 class="card-title">Today’s Offers</h5>
+          <p class="card-text text-muted">Enjoy fresh deals on custom cakes and party packs.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h5 class="card-title">Trending Items</h5>
+          <p class="card-text text-muted">Popular cakes, cookies, and artisan breads are waiting.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h5 class="card-title">Quick Orders</h5>
+          <p class="card-text text-muted">Reorder your favorites in a single click.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-3">Available Products</h4>
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let product of products">
+      <div class="card h-100 shadow-sm border-0">
+        <img [src]="getProductImage(product)" [alt]="product.name" class="card-img-top" height="220" />
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="text-danger fw-semibold">₹ {{ product.price }}</p>
+          <button class="btn btn-danger btn-sm" (click)="addToCart(product)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
