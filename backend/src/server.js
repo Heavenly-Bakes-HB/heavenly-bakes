@@ -1,0 +1,32 @@
+require("dotenv").config();
+
+const app = require("./app");
+const pool = require("./config/db");
+
+const PORT = process.env.PORT || 3000;
+
+async function startServer() {
+
+    try {
+
+        await pool.query("SELECT NOW()");
+
+        console.log("✅ Database Connected");
+
+        app.listen(PORT, () => {
+
+            console.log(`🚀 Server Started on Port ${PORT}`);
+
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        process.exit(1);
+
+    }
+
+}
+
+startServer();

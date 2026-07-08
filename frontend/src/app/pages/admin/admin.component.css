@@ -1,0 +1,12 @@
+.card-title {
+  margin-bottom: 1rem;
+}
+
+table th,
+table td {
+  vertical-align: middle;
+}
+
+.badge {
+  font-size: 0.85rem;
+}
