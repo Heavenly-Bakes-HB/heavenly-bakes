@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: heavenly-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: heavenly_bakes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    networks:
+      - heavenly-network
+
+  backend:
+    build:
+      context: ./backend
+
+    image: sherbia/heavenly-backend:latest
+
+    container_name: heavenly-backend
+
+    restart: unless-stopped
+
+    depends_on:
+      - postgres
+
+    env_file:
+      - ./backend/.env
+
+    ports:
+      - "5000:5000"
+
+    networks:
+      - heavenly-network
+
+  frontend:
+    build:
+      context: ./frontend
+
+    image: sherbia/heavenly-frontend:latest
+
+    container_name: heavenly-frontend
+
+    restart: unless-stopped
+
+    depends_on:
+      - backend
+
+    ports:
+      - "80:80"
+
+    networks:
+      - heavenly-network
+
+volumes:
+  postgres-data:
+
+networks:
+  heavenly-network:
