@@ -21,9 +21,7 @@ services:
       - heavenly-network
 
   backend:
-    build:
-      context: ./backend
-
+    
     image: sherbia/heavenly-backend:latest
 
     container_name: heavenly-backend
@@ -43,9 +41,6 @@ services:
       - heavenly-network
 
   frontend:
-    build:
-      context: ./frontend
-
     image: sherbia/heavenly-frontend:latest
 
     container_name: heavenly-frontend
